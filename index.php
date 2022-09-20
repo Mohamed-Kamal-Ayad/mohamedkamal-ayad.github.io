@@ -73,6 +73,11 @@ if (isset($_GET['edit'])) {
     }
 }
 
+if (isset($_GET['searchName'])) {
+    $searchName = $_GET['searchName'];
+    $select = "SELECT * FROM employees WHERE `name` LIKE '%$searchName%'";
+    $selectName = mysqli_query($connection, $select);
+}
 ?>
 
 <!DOCTYPE html>
@@ -128,10 +133,15 @@ if (isset($_GET['edit'])) {
                     <button type="submit" name="insert" class="btn btn-primary mt-2">Insert Employee</button>
                     <?php endif; ?>
                 </form>
+                <a href="login.php"><button class="btn btn-info" name="loginn">Login</button></a>
             </div>
         </div>
     </div>
     <div class="container col-9 mt-5">
+        <form method="GET">
+            <input type="text" name="searchName">
+            <input type="submit" name="search">
+        </form>
         <table id="return" class="table table-dark">
             <thead>
                 <tr>
@@ -165,6 +175,20 @@ if (isset($_GET['edit'])) {
             </tbody>
     </div>
     </table>
+    <?php if (isset($_GET['searchName'])) : ?>
+    <table>
+        <?php foreach ($selectName as $data1) : ?>
+        <tr>
+            <td><?= $data1['ID']; ?></td>
+            <td><?= $data1['name']; ?></td>
+            <td><?= $data1['email']; ?></td>
+            <td><?= $data1['salary']; ?></td>
+            <td><?= $data1['city']; ?></td>
+            <td><?= $data1['departmentID']; ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+    <?php endif; ?>
 </body>
 
 </html>
